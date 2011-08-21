@@ -2,6 +2,23 @@ onerror {resume}
 quietly virtual signal -install /jpeg_tb/u_jpegenc/u_fdct { /jpeg_tb/u_jpegenc/u_fdct/dbuf_waddr(5 downto 0)} wad
 quietly WaveActivateNextPane {} 0
 add wave -noupdate -divider HostBFM
+add wave -noupdate -divider JpegEnc
+add wave -noupdate -divider CtrlSM
+add wave -noupdate -divider BUF_FIFO
+add wave -noupdate -divider FDCT
+add wave -noupdate -divider ZZ_TOP
+add wave -noupdate -divider {zigzag core}
+add wave -noupdate -divider QUANT_TOP
+add wave -noupdate -divider quantizer
+add wave -noupdate -divider RLE_TOP
+add wave -noupdate -divider rle_core
+add wave -noupdate -divider DoubleFIFO
+add wave -noupdate -divider RLE_DoubleFIFO
+add wave -noupdate -divider HUFFMAN
+add wave -noupdate -divider BYTE_STUFFER
+add wave -noupdate -divider JFIFGen
+add wave -noupdate -divider OutMux
+add wave -noupdate -divider HostBFM
 add wave -noupdate -format Logic /jpeg_tb/u_hostbfm/clk
 add wave -noupdate -format Logic /jpeg_tb/u_hostbfm/rst
 add wave -noupdate -format Literal /jpeg_tb/u_hostbfm/opb_abus
@@ -132,20 +149,47 @@ add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_buf_fifo/fifo_almost_full
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_buf_fifo/fdct_fifo_rd
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/fdct_fifo_q
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_buf_fifo/fdct_fifo_hf_full
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/pixel_cnt
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/line_cnt
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/pix_inblk_cnt
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/pix_inblk_cnt_d1
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/line_inblk_cnt
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/read_block_cnt
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/read_block_cnt_d1
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/write_block_cnt
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/busy
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/busy_block
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/next_memwr_line_cnt
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/next_pixel_cnt
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/ramraddr_int
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/raddr_base_line
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/raddr_tmp
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/line_lock
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/memwr_line_cnt
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/memrd_offs_cnt
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/memrd_line
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/wr_line_idx
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/rd_line_idx
+add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_buf_fifo/image_write_end
+add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_buf_fifo/clk
+add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_buf_fifo/rst
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/img_size_x
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/img_size_y
+add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_buf_fifo/sof
+add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_buf_fifo/iram_wren
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/iram_wdata
+add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_buf_fifo/fifo_almost_full
+add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_buf_fifo/fdct_fifo_rd
+add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/fdct_fifo_q
+add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_buf_fifo/fdct_fifo_hf_full
 add wave -noupdate -format Literal -radix unsigned /jpeg_tb/u_jpegenc/u_buf_fifo/pixel_cnt
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/line_cnt
-add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/ramq
-add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/ramd
-add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/ramwaddr
-add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_buf_fifo/ramenw
-add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/ramraddr
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/pix_inblk_cnt
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/read_block_cnt
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/write_block_cnt
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/ramraddr_int
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/raddr_base_line
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/raddr_tmp
-add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/ramwaddr_d1
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/line_lock
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_buf_fifo/memwr_line_cnt
 add wave -noupdate -format Literal -radix unsigned /jpeg_tb/u_jpegenc/u_buf_fifo/memwr_line_cnt
@@ -309,7 +353,7 @@ add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/rle_rdaddr
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/rle_data
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_quant_top/zig_buf_sel
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/zig_rd_addr
-add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/zig_data
+add wave -noupdate -format Literal -radix decimal /jpeg_tb/u_jpegenc/u_quant_top/zig_data
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/qdata
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/qaddr
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_quant_top/qwren
@@ -318,7 +362,7 @@ add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/dbuf_q
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_quant_top/dbuf_we
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/dbuf_waddr
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/dbuf_raddr
-add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/zigzag_di
+add wave -noupdate -format Literal -radix decimal /jpeg_tb/u_jpegenc/u_quant_top/zigzag_di
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_quant_top/zigzag_divalid
 add wave -noupdate -format Literal -radix decimal /jpeg_tb/u_jpegenc/u_quant_top/quant_dout
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_quant_top/quant_dovalid
@@ -332,13 +376,13 @@ add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_quant_top/fifo_empty
 add wave -noupdate -divider quantizer
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/rst
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/clk
-add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/di
+add wave -noupdate -format Literal -radix decimal /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/di
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/divalid
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/qdata
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/qwaddr
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/qwren
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/cmp_idx
-add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/do
+add wave -noupdate -format Literal -radix decimal /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/do
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/dovalid
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/romaddr_s
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_quant_top/u_quantizer/slv_romaddr_s
@@ -568,7 +612,7 @@ add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_outmux/ram_byte
 add wave -noupdate -format Logic /jpeg_tb/u_jpegenc/u_outmux/ram_wren
 add wave -noupdate -format Literal /jpeg_tb/u_jpegenc/u_outmux/ram_wraddr
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 4} {16306802 ps} 0}
+WaveRestoreCursors {{Cursor 4} {103345000 ps} 0}
 configure wave -namecolwidth 150
 configure wave -valuecolwidth 83
 configure wave -justifyvalue left
@@ -583,4 +627,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {9682164 ps} {35997790 ps}
+WaveRestoreZoom {0 ps} {2175101250 ps}
