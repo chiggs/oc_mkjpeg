@@ -83,10 +83,14 @@ architecture RTL of DCT1D is
   signal ramwaddro_d2    : STD_LOGIC_VECTOR(RAMADRR_W-1 downto 0);
   signal ramwaddro_d3    : STD_LOGIC_VECTOR(RAMADRR_W-1 downto 0);
   signal ramwaddro_d4    : STD_LOGIC_VECTOR(RAMADRR_W-1 downto 0);
+  signal ramwaddro_d5    : STD_LOGIC_VECTOR(RAMADRR_W-1 downto 0);
+  signal ramwaddro_d6    : STD_LOGIC_VECTOR(RAMADRR_W-1 downto 0);
   signal wmemsel_d1      : STD_LOGIC;
   signal wmemsel_d2      : STD_LOGIC;
   signal wmemsel_d3      : STD_LOGIC;
   signal wmemsel_d4      : STD_LOGIC;
+  signal wmemsel_d5      : STD_LOGIC;
+  signal wmemsel_d6      : STD_LOGIC;
   signal romedatao_d1    : T_ROM1DATAO;
   signal romodatao_d1    : T_ROM1DATAO;
   signal romedatao_d2    : T_ROM1DATAO;
@@ -98,12 +102,56 @@ architecture RTL of DCT1D is
   signal dcto_3          : STD_LOGIC_VECTOR(DA_W-1 downto 0);
   signal dcto_4          : STD_LOGIC_VECTOR(DA_W-1 downto 0);
   
+  signal fpr_out         : STD_LOGIC_VECTOR(DA_W-12-1 downto 0);
+
+  component FinitePrecRndNrst is
+  generic 
+  (
+    C_IN_SZ   : natural := 37;
+    C_OUT_SZ  : natural := 16;
+    C_FRAC_SZ : natural := 15   
+  );
+  port ( 
+    CLK     : in std_logic;
+    RST     : in std_logic;
+    datain  : in STD_LOGIC_VECTOR(C_IN_SZ-1 downto 0);
+    dataval : in std_logic;
+    dataout : out STD_LOGIC_VECTOR(C_OUT_SZ-1 downto 0);                        
+    
+    clip_inc : out std_logic;
+    dval_out : out std_logic
+  );
+end component;
+  
 begin
 
-  ramwaddro <= ramwaddro_d4;
-  ramwe     <= ramwe_d4;
-  ramdatai  <= dcto_4(DA_W-1 downto 12);
+  ramwaddro <= ramwaddro_d6;
+  --ramwe     <= ramwe_d4;
+  --ramdatai  <= dcto_4(DA_W-1 downto 12);
   wmemsel   <= wmemsel_d4;
+  
+  odv <= ramwe_d4;
+  dcto <= STD_LOGIC_VECTOR(RESIZE(SIGNED(fpr_out),12));
+  
+  ramdatai <= fpr_out;
+  
+  U_FinitePrecRndNrst : FinitePrecRndNrst 
+  generic map(
+    C_IN_SZ  => DA_W,
+    C_OUT_SZ => DA_W-12,
+    C_FRAC_SZ => 12
+  )
+  port map(
+    CLK         => clk,
+    RST         => rst,
+
+    datain      => dcto_4,
+    dataval     => ramwe_d4,
+    dataout     => fpr_out,
+
+    clip_inc    => open,
+    dval_out    => ramwe
+  );
  
   process(clk,rst)
   begin
@@ -224,10 +272,14 @@ begin
       ramwaddro_d2    <= ramwaddro_d1;
       ramwaddro_d3    <= ramwaddro_d2;
       ramwaddro_d4    <= ramwaddro_d3;
+      ramwaddro_d5    <= ramwaddro_d4;
+      ramwaddro_d6    <= ramwaddro_d5;
       wmemsel_d1      <= wmemsel_reg;
       wmemsel_d2      <= wmemsel_d1;
       wmemsel_d3      <= wmemsel_d2;
       wmemsel_d4      <= wmemsel_d3;
+      wmemsel_d5      <= wmemsel_d4;
+      wmemsel_d6      <= wmemsel_d5;
       
       if even_not_odd = '0' then
         dcto_1 <= STD_LOGIC_VECTOR(RESIZE

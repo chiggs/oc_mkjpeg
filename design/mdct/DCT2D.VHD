@@ -89,6 +89,29 @@ architecture RTL of DCT2D is
   signal romodatao_d3    : T_ROM2DATAO;
   signal romedatao_d4    : T_ROM2DATAO;
   signal romodatao_d4    : T_ROM2DATAO;
+  
+  signal odv_s  : std_logic;
+  signal dcto_s : std_logic_vector(OP_W-1 downto 0);
+
+component FinitePrecRndNrst is
+  generic 
+  (
+    C_IN_SZ   : natural := 37;
+    C_OUT_SZ  : natural := 16;
+    C_FRAC_SZ : natural := 15   
+  );
+  port ( 
+    CLK     : in std_logic;
+    RST     : in std_logic;
+    datain  : in STD_LOGIC_VECTOR(C_IN_SZ-1 downto 0);
+    dataval : in std_logic;
+    dataout : out STD_LOGIC_VECTOR(C_OUT_SZ-1 downto 0);                        
+    
+    clip_inc : out std_logic;
+    dval_out : out std_logic
+  );
+end component;
+
 begin
 
   ramraddro_sg:
@@ -303,8 +326,26 @@ begin
     end if;
   end process;
   
-  dcto <= dcto_5(DA2_W-1 downto 12);
-  odv  <= odv_d5;
+  dcto <= dcto_s;
+  odv  <= odv_s;
+  
+  U_FinitePrecRndNrst : FinitePrecRndNrst 
+  generic map(
+    C_IN_SZ  => DA2_W,
+    C_OUT_SZ => DA2_W-12,
+    C_FRAC_SZ => 12
+  )
+  port map(
+    CLK         => clk,
+    RST         => rst,
+
+    datain      => dcto_5,
+    dataval     => odv_d5,
+    dataout     => dcto_s,
+
+    clip_inc    => open,
+    dval_out    => odv_s
+  );
   
   p_romaddr : process(CLK, RST)
   begin
