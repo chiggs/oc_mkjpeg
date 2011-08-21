@@ -271,7 +271,7 @@ begin
             wait until rising_edge(clk);
           end loop;
           
-          --for i in 0 to 9 loop
+          --for i in 0 to 4 loop
           --  wait until rising_edge(clk);
           --end loop;
           
@@ -379,7 +379,8 @@ begin
   --X"0D", X"0C", X"0B", X"0B", X"0C", X"19", X"12", X"13", X"0F", X"14", X"1D", X"1A", X"1F", X"1E", X"1D", X"1A",
   --X"1C", X"1C", X"20", X"24", X"2E", X"27", X"20", X"22", X"2C", X"23", X"1C", X"1C", X"28", X"37", X"29", X"2C",
   --X"30", X"31", X"34", X"34", X"34", X"1F", X"27", X"39", X"3D", X"38", X"32", X"3C", X"2E", X"33", X"34", X"32"
-   --others => X"01"
+   
+  --others => X"01"
   );
   
     variable data_read  : unsigned(31 downto 0);
