@@ -35,11 +35,17 @@ vcom ../design/common/SingleSM.VHD
 vcom vhdl/DCT_TROM.vhd
 
 # buffifo
-vcom ../design/buffifo/SUB_RAMZ.vhd
-vcom ../design/buffifo/SUB_FIFO.vhd
-vcom ../design/buffifo/Buf_Fifo.vhd
+vcom ../design/buffifo/multiplier.vhd
+vcom ../design/buffifo/SUB_RAMZ_LUT.vhd
+vcom ../design/buffifo/BUF_FIFO.vhd
+
+#vcom ../design/buffifo/SUB_RAMZ.vhd
+#vcom ../design/buffifo/BUF_FIFO_oldest.vhd
+#vcom ../design/buffifo/BUF_FIFO_new.vhd
+
 
 # fdct
+vlog ../design/mdct/FinitePrecRndNrst.v
 vcom ../design/mdct/MDCT_PKG.vhd
 vcom ../design/mdct/ROMO.vhd
 vcom ../design/mdct/ROME.vhd
