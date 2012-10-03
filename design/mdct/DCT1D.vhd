@@ -79,6 +79,8 @@ architecture RTL of DCT1D is
   signal ramwe_d2        : STD_LOGIC;
   signal ramwe_d3        : STD_LOGIC;
   signal ramwe_d4        : STD_LOGIC;
+  signal ramwe_d5        : STD_LOGIC;
+  signal ramwe_d6        : STD_LOGIC;
   signal ramwaddro_d1    : STD_LOGIC_VECTOR(RAMADRR_W-1 downto 0);
   signal ramwaddro_d2    : STD_LOGIC_VECTOR(RAMADRR_W-1 downto 0);
   signal ramwaddro_d3    : STD_LOGIC_VECTOR(RAMADRR_W-1 downto 0);
@@ -91,6 +93,7 @@ architecture RTL of DCT1D is
   signal wmemsel_d4      : STD_LOGIC;
   signal wmemsel_d5      : STD_LOGIC;
   signal wmemsel_d6      : STD_LOGIC;
+  signal wmemsel_d7      : STD_LOGIC;
   signal romedatao_d1    : T_ROM1DATAO;
   signal romodatao_d1    : T_ROM1DATAO;
   signal romedatao_d2    : T_ROM1DATAO;
@@ -126,11 +129,9 @@ end component;
 begin
 
   ramwaddro <= ramwaddro_d6;
-  --ramwe     <= ramwe_d4;
-  --ramdatai  <= dcto_4(DA_W-1 downto 12);
-  wmemsel   <= wmemsel_d4;
+  wmemsel   <= wmemsel_d6; --wmemsel_d4;
   
-  odv <= ramwe_d4;
+  odv <= ramwe_d6;
   dcto <= STD_LOGIC_VECTOR(RESIZE(SIGNED(fpr_out),12));
   
   ramdatai <= fpr_out;
@@ -247,14 +248,21 @@ begin
       ramwe_d2        <= '0';
       ramwe_d3        <= '0';
       ramwe_d4        <= '0';
+      ramwe_d5        <= '0';
+      ramwe_d6        <= '0';
       ramwaddro_d1    <= (others => '0');
       ramwaddro_d2    <= (others => '0');
       ramwaddro_d3    <= (others => '0');
       ramwaddro_d4    <= (others => '0');
+      ramwaddro_d5    <= (others => '0');
+      ramwaddro_d6    <= (others => '0');
       wmemsel_d1      <= '0';
       wmemsel_d2      <= '0';
       wmemsel_d3      <= '0';
       wmemsel_d4      <= '0';
+      wmemsel_d5      <= '0';
+      wmemsel_d6      <= '0';
+      wmemsel_d7      <= '0';
       dcto_1          <= (others => '0');
       dcto_2          <= (others => '0');
       dcto_3          <= (others => '0');
@@ -268,6 +276,8 @@ begin
       ramwe_d2        <= ramwe_d1;
       ramwe_d3        <= ramwe_d2;
       ramwe_d4        <= ramwe_d3;
+      ramwe_d5        <= ramwe_d4;
+      ramwe_d6        <= ramwe_d5;
       ramwaddro_d1    <= ramwaddro_s;
       ramwaddro_d2    <= ramwaddro_d1;
       ramwaddro_d3    <= ramwaddro_d2;
@@ -280,6 +290,7 @@ begin
       wmemsel_d4      <= wmemsel_d3;
       wmemsel_d5      <= wmemsel_d4;
       wmemsel_d6      <= wmemsel_d5;
+      wmemsel_d7      <= wmemsel_d6;
       
       if even_not_odd = '0' then
         dcto_1 <= STD_LOGIC_VECTOR(RESIZE
