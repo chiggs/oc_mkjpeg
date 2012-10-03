@@ -39,7 +39,7 @@ vcom ../design/buffifo/multiplier.vhd
 vcom ../design/buffifo/SUB_RAMZ_LUT.vhd
 vcom ../design/buffifo/BUF_FIFO.vhd
 
-#vcom ../design/buffifo/SUB_RAMZ.vhd
+vcom ../design/buffifo/SUB_RAMZ.vhd
 #vcom ../design/buffifo/BUF_FIFO_oldest.vhd
 #vcom ../design/buffifo/BUF_FIFO_new.vhd
 
